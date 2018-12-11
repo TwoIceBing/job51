@@ -4,7 +4,6 @@
 ```
 │  lpush.py                 （负责从redis推送数据）  
 │  run_spider.py            （负责运行爬虫）  
-│  scrapy-redis.docx  
 │  scrapy.cfg  
 │  
 ├─analysis  （负责数据分析模块）  
