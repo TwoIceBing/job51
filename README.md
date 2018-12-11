@@ -1,6 +1,7 @@
 # job51
 前程无忧数据分析  
 项目树：  
+```
 │  lpush.py                 （负责从redis推送数据）  
 │  run_spider.py            （负责运行爬虫）  
 │  scrapy-redis.docx  
@@ -55,3 +56,4 @@
             __init__.py  
             __init__.pyc  
   
+```
