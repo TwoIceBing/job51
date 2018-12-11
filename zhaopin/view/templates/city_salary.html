@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="./static/echarts.min.js"></script>
+    <title>51job数据分析</title>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+    data = {{data|tojson}};
+    for(job in data){
+        divNode = document.createElement("div");
+        divNode.style = "width: 1500px;height:250px;";
+        var myChart = echarts.init(divNode);
+        var option = {
+            title: {
+                text: job+'在不同地区的薪资',
+                x:'center'
+            },
+            tooltip: {},
+            legend: {
+                x:'right',
+                data:job
+            },
+            xAxis: {
+                name:'城市',
+                type:'category',
+                data: data[job]['city'],
+                axisLabel:{
+                    fontWeight:'lighter',
+                    interval:0,
+                    fontSize: 14,
+                    rotate:45
+                }
+            },
+            yAxis: {
+                name:'薪资（单位/K）',
+                type:'value'
+            },
+            series: [{
+                name: '薪资',
+                type: 'bar',
+                data: data[job]['avg_salary']
+            }],
+        };
+        myChart.setOption(option);
+        document.getElementsByTagName("body")[0].appendChild(divNode);
+    }
+
+</script>
+</html>

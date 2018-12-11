@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>51job数据分析</title>
+<link href="../static/style.css" type='text/css' rel="stylesheet"/>
+<script src="../static/echarts.min.js"></script>
+</head>
+<body>
+	<div class='header'>
+        <p>51job数据分析</p>
+    </div>
+    <div class="content">
+        <div class="nav">
+            <ul>
+                <li><a href="/test1">各职业平均薪资待遇对比</a></li>
+                <li id="job_salary_python"><a href="/job_salary/python">python在不同地区的薪资对比</a></li>
+                <li id="job_salary_java"><a href="/job_salary/java">java在不同地区的薪资对比</a></li>
+                <li id="job_salary_大数据"><a href="/job_salary/%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据在不同地区的薪资对比</a></li>
+                <li id="city_salary_python"><a href="/city_salary/python">python在不同地区的薪资热力图</a></li>
+            <li id="city_salary_java"><a href="/city_salary/java">java在不同地区的薪资热力图</a></li>
+            <li id="city_salary_大数据"><a href="/city_salary/%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据在不同地区的薪资热力图</a></li>
+            </ul>
+        </div>
+        <div class="container">
+            <div class="title">{{name}}在不同地区的薪资对比</div>
+            <div class="show">
+                <div class='chart-type'>条形图</div>
+                <div id="main"></div>
+            </div>
+        </div>
+    </div>
+<script>
+    document.getElementById('job_salary_{{name}}').className="current";
+    job = {{data|tojson}};
+    divNode = document.createElement("div");
+    divNode.style = "width: 1400px;height:400px;";
+    var myChart = echarts.init(divNode);
+    var option = {
+        title: {
+            text: '{{name}}在不同地区的薪资',
+            x:'center'
+        },
+        tooltip: {},
+        legend: {
+            x:'right',
+            data:job
+        },
+        xAxis: {
+            name:'城市',
+            type:'category',
+            data: job['city'],
+            axisLabel:{
+                fontWeight:'lighter',
+                interval:0,
+                fontSize: 14,
+                rotate:45
+            }
+        },
+        yAxis: {
+            name:'薪资（单位/K）',
+            type:'value'
+        },
+        series: [{
+            name: '薪资',
+            type: 'bar',
+            data: job['avg_salary']
+        }],
+    };
+    myChart.setOption(option);
+    document.getElementById("main").appendChild(divNode);
+
+</script>
+</body>
+</html>

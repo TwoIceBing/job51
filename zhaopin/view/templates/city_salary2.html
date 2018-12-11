@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="static/echarts.min.js"></script>
+    <title>51job数据分析</title>
+</head>
+<body>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+ <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            legend:{
+                x:'right',
+                data:[],
+            },
+            title: {
+                text: '同一语言不同地区薪资的待遇',
+                x:'center'
+            },
+            grid: [
+                {x: '7%', y1: '7%', width: '76%', height: '30%'},
+                {x: '7%', y2: '7%', width: '76%', height: '30%'},
+                {x: '7%', y3: '7%', width: '76%', height: '30%'},
+            ],
+            tooltip: {},
+            xAxis: [],
+            yAxis: [],
+            series: [],
+
+        };
+        var data = {{data|tojson}};
+        var index = 0;
+        for(job in data){
+            option['legend']['data'].push(job);
+
+            xAxis = {
+                gridIndex: index,
+                data: data[job]['city']
+            };
+            option['xAxis'].push(xAxis);
+
+            yAxis = {
+                gridIndex: index,
+            };
+            option['yAxis'].push(yAxis);
+
+            dict = {
+                type: 'bar',
+                data: data[job]['avg_salary'],
+                xAxisIndex: index,
+                yAxisIndex: index,
+            };
+            option['series'].push(dict);
+            index += 1;
+        }
+
+        // 使用刚指定的配置项和数据显示图表。
+        console.log(option);
+        myChart.setOption(option);
+    </script>
+</body>
+</html>

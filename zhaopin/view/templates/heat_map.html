@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=FOtHtZ92dCKMjpx0XA05g8VEZn95QWOK"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <link href="../static/style.css" type='text/css' rel="stylesheet"/>
+    <title>51job数据分析</title>
+    <style type="text/css">
+        #main {
+            width:1300px;
+            height:1000px;
+        }
+    </style>
+</head>
+<body>
+<div class='header'>
+    <p>51job数据分析</p>
+</div>
+<div class="content">
+    <div class="nav">
+        <ul>
+            <li><a href="/test1">各职业平均薪资待遇对比</a></li>
+            <li id="job_salary_python"><a href="/job_salary/python">python在不同地区的薪资对比</a></li>
+            <li id="job_salary_java"><a href="/job_salary/java">java在不同地区的薪资对比</a></li>
+            <li id="job_salary_大数据"><a href="/job_salary/%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据在不同地区的薪资对比</a></li>
+            <li id="city_salary_python"><a href="/city_salary/python">python在不同地区的薪资热力图</a></li>
+            <li id="city_salary_java"><a href="/city_salary/java">java在不同地区的薪资热力图</a></li>
+            <li id="city_salary_大数据"><a href="/city_salary/%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据在不同地区的薪资热力图</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="title">{{name}}在不同地区的薪资热力图</div>
+        <div class="show">
+            <div class='chart-type'>热力图</div>
+            <div id="main"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    document.getElementById('city_salary_{{name}}').className="current";
+    var map = new BMap.Map("main");          // 创建地图实例
+
+    var point = new BMap.Point(110, 34);
+    map.centerAndZoom(point, 6);             // 初始化地图，设置中心点坐标和地图级别
+
+    var points ={{points|tojson}};
+
+    if(!isSupportCanvas()){
+    	alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+    }
+	heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+	map.addOverlay(heatmapOverlay);
+	heatmapOverlay.setDataSet({data:points,max:14});
+	//是否显示热力图
+    function openHeatmap(){
+        heatmapOverlay.show();
+    }
+	function closeHeatmap(){
+        heatmapOverlay.hide();
+    }
+	openHeatmap();  //默认为显示
+    function setGradient(){
+     	/*格式如下所示:
+		{
+	  		0:'rgb(102, 255, 0)',
+	 	 	.5:'rgb(255, 170, 0)',
+		  	1:'rgb(255, 0, 0)'
+		}*/
+     	var gradient = {};
+     	var colors = document.querySelectorAll("input[type='color']");
+     	colors = [].slice.call(colors,0);
+     	colors.forEach(function(ele){
+			gradient[ele.getAttribute("data-key")] = ele.value;
+     	});
+        heatmapOverlay.setOptions({"gradient":gradient});
+    }
+	//判断浏览区是否支持canvas
+    function isSupportCanvas(){
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+
+</script>

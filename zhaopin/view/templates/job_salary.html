@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="static/echarts.min.js"></script>
+    <title>51job数据分析</title>
+</head>
+<body>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+ <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'python、java、大数据职业薪资待遇对比',
+                x:'center'
+            },
+            tooltip: {},
+            legend: {
+                data:['职业']
+            },
+            xAxis: {
+                name:'职位',
+                type:'category',
+                data: {{jobname|safe}}
+            },
+            yAxis: {
+                name:'薪资（单位/K）'
+            },
+            series: [{
+                name: '薪资',
+                type: 'bar',
+                data: {{salary}}
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>

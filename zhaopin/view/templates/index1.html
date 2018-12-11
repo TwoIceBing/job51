@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>51job数据分析</title>
+<link href="../static/style.css" type='text/css' rel="stylesheet"/>
+<script src="../static/echarts.min.js"></script>
+</head>
+<body>
+	<div class='header'>
+        <p>51job数据分析</p>
+    </div>
+    <div class="content">
+        <div class="nav">
+            <ul>
+                <li class="current"><a href="#">各职业平均薪资待遇对比</a></li>
+                <li id="job_salary_python"><a href="/job_salary/python">python在不同地区的薪资对比</a></li>
+                <li id="job_salary_java"><a href="/job_salary/java">java在不同地区的薪资对比</a></li>
+                <li id="job_salary_大数据"><a href="/job_salary/%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据在不同地区的薪资对比</a></li>
+                <li id="city_salary_python"><a href="/city_salary/python">python在不同地区的薪资热力图</a></li>
+                <li id="city_salary_java"><a href="/city_salary/java">java在不同地区的薪资热力图</a></li>
+                <li id="city_salary_大数据"><a href="/city_salary/%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据在不同地区的薪资热力图</a></li>
+            </ul>
+        </div>
+        <div class="container">
+            <div class="title">python、java、大数据职业薪资待遇对比</div>
+            <div class="show" align="center">
+                <div class='chart-type' align="left">条形图</div>
+                <div id="main" style="width: 600px;height:400px;"></div>
+            </div>
+        </div>
+    </div>
+<script>
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('main'));
+
+// 指定图表的配置项和数据
+var option = {
+    tooltip: {},
+    legend: {
+        data:['职业']
+    },
+    xAxis: {
+        name:'职位',
+        type:'category',
+        data: {{jobname|safe}}
+    },
+    yAxis: {
+        name:'薪资（单位/K）'
+    },
+    series: [{
+        name: '薪资',
+        type: 'bar',
+        data: {{salary}}
+    }]
+};
+
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+</script>
+</body>
+</html>
